@@ -20,6 +20,13 @@ contract Instagram {
         uint256 tipAmount,
         address payable auther
     );
+    event tipAmountImage(
+        uint256 id,
+        string hash,
+        string description,
+        uint256 tipAmount,
+        address payable auther
+    );
 
     function uploadImage(string memory _hash, string memory _description)
         public
@@ -37,5 +44,19 @@ contract Instagram {
             msg.sender
         );
         emit uploadedImage(postCount, _hash, _description, 0, msg.sender);
+    }
+
+    function tipImageOwner(uint _id) public payable{
+        require(_id > 0 && _id <= postCount);
+        // Fetch selected post and auther
+        Image memory _image = images[_id];
+        address payable _auther = _image.auther;
+        // pay the ether to auther
+        _auther.transfer(msg.value);
+        // update and put post on blockchain
+        _image.tipAmount = _image.tipAmount + msg.value;
+        images[_id] = _image;
+        // emit events 
+        emit tipAmountImage(_id, _image.hash, _image.description, _image.tipAmount, _auther);
     }
 }
