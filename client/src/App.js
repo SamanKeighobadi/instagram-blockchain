@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import "./App.css";
 import Web3 from 'web3';
+import Jdenticon from 'react-jdenticon';
 
 const App = () =>{
 
@@ -32,6 +33,7 @@ const App = () =>{
 
   return(
     <div>
+      <p>{account ? account  : "0x0"}</p>
       <h1>Hello instagram !</h1>
     </div>
   )

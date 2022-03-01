@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "jdenticon": "^3.1.1",
+    "react-jdenticon": "^0.0.9"
+  }
+}
