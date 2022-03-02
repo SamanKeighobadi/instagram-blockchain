@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "ipfs-http-client": "^56.0.1",
     "jdenticon": "^3.1.1",
     "react-jdenticon": "^0.0.9"
   }

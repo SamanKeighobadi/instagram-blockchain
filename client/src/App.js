@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import Web3 from "web3";
-import Jdenticon from "react-jdenticon";
+// import Jdenticon from "react-jdenticon";
 import Ethtagram from "./abis/Instagram.json";
 
 const App = () => {
   const [account, setAccount] = useState("");
   const [loading, setLoading] = useState(true);
   const [ethtagram, setEthtagram] = useState(null);
-  const [images,setImages] = useState([])
-const [buffer,setBuffer] = useState(null)
+  // const [images,setImages] = useState([])
+const [bufferImage,setBuffer] = useState(null)
+let buffer ;
 
   const loadWeb3 = async () => {
     if (window.ethereum) {
@@ -44,14 +45,16 @@ const [buffer,setBuffer] = useState(null)
     const file = event.target.files[0];
     const reader = new window.FileReader();
     reader.readAsArrayBuffer(file)
-
+    
+    
     reader.onloadend = () =>{
       setBuffer(Buffer(reader.result))
-      console.log(buffer);
-    }
-
+      buffer = Buffer(reader.result);
+    }  
   }
 
+  
+  
   useEffect(() => {
     loadWeb3();
     loadBlockchain();
