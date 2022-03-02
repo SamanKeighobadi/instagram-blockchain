@@ -3,12 +3,9 @@ import "./App.css";
 import Web3 from "web3";
 // import Jdenticon from "react-jdenticon";
 import Ethtagram from "./abis/Instagram.json";
-const ipfsClient = require("ipfs-http-client");
-const ipfs = ipfsClient.create({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https",
-});
+import {create} from 'ipfs-http-client'
+
+const client = create('https://ipfs.infura.io:5001/api/v0');
 
 const App = () => {
   const [account, setAccount] = useState("");
@@ -63,25 +60,17 @@ let test ;
       console.log('onloaded function');
     };
   };
-
-  const uploadImage = (description) => {
+  const [urlArr, setUrlArr] = useState([]);
+  const uploadImage = async (description) => {
     console.log(bufferImage);
-    ipfs.add(bufferImage, (err, result) => {
-      console.log('result',result);
-      if(err){
-        console.log(err);
-        return
-      }
-      setLoading(true)
-      ethtagram.methods.uploadImage(result[0].hash,description).send({from:account})
-      .on('transactionHash',hash =>{
-        setLoading(false)
-      })
-    });
-
-    
+ 
+    const created = await client.add(bufferImage)
+    console.log(created);
+    const url = `https://ipfs.infura.io/ipfs/${created.path}`;
+    setUrlArr(prev => [...prev, url]);  
   };
-
+  
+  console.log(urlArr);
   useEffect(() => {
     loadWeb3();
     loadBlockchain();
@@ -117,6 +106,9 @@ let test ;
               <button>Upload</button>
             </div>
           </form>
+          {urlArr.map((url,index) => (
+            <img key={index} src={url} alt='image' width={100} height={100} />
+          ))}
         </>
       )}
     </div>
