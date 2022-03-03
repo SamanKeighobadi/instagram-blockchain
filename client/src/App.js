@@ -38,15 +38,16 @@ const App = () => {
       const ethtagram = new web3.eth.Contract(
         Ethtagram.abi,
         networkData.address
-      );
+        );
+        setEthtagram(ethtagram);
+
       const imageCount = await ethtagram.methods.imageCount().call()
 
       for(let i =1;i<imageCount;i++){
         const image = await ethtagram.methods.images(i).call();
-        console.log(image);
+        setImages(prev => [...prev,image])
       }
-      setEthtagram(ethtagram);
-
+      
       setLoading(false);
     } else {
       alert("contract not deployed");
@@ -79,10 +80,10 @@ const App = () => {
     setUrlArr(prev => [...prev, url]);  
 
     ethtagram.methods.uploadImage(created.path,description).send({from:account}).on("transactionHash",result =>{
+      setLoading(false)
       console.log(result);
     })
   
-    setLoading(false)
   };
   
 
@@ -121,8 +122,12 @@ const App = () => {
               <button>Upload</button>
             </div>
           </form>
-          {urlArr.map((url,index) => (
-            <img key={index} src={url} alt='image' width={400} height={400} />
+          {images.length >0 && images.map((img,index) => (
+            <div key={index} >
+            <img  src={`https://ipfs.infura.io/ipfs/${img.hash}`} alt={img.description} width={400} height={400} />
+            {img.hash}
+            </div>
+            
           ))}
         </>
       )}
