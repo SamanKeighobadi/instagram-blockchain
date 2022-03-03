@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import Web3 from "web3";
-// import Jdenticon from "react-jdenticon";
 import Ethtagram from "./abis/Instagram.json";
 import { create } from "ipfs-http-client";
 import Navbar from "./components/common/Navbar";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -15,6 +16,8 @@ const App = () => {
   const [images, setImages] = useState([]);
   const [text, setText] = useState("");
   const [bufferImage, setBufferImage] = useState(null);
+
+  const Alert = withReactContent(Swal);
 
   const loadWeb3 = async () => {
     if (window.ethereum) {
@@ -83,6 +86,13 @@ const App = () => {
       .on("transactionHash", (result) => {
         setLoading(false);
         console.log(result);
+        Alert.fire({
+          icon:"success",
+          title:"Image Uploaded !",
+          showConfirmButton:false,
+          timer:3000,
+        });
+        setTimeout(() => window.location.reload() ,3000)
       });
   };
 
@@ -94,12 +104,22 @@ const App = () => {
       .on("transactionHash", (result) => {
         setLoading(false);
         console.log(result);
+        Alert.fire({
+          icon:"success",
+          title:"Tip Amount successfull !",
+          showConfirmButton:false,
+          timer:3000,
+        });
+        setTimeout(() => window.location.reload() ,3000)
       });
   };
 
   const copyToClipboard = (text) =>{
     navigator.clipboard.writeText(text);
-    alert('copied to clipboard')
+    Alert.fire({
+      icon:'success',
+      title:"Copied to clipboard!"
+    })
   }
 
   useEffect(() => {
