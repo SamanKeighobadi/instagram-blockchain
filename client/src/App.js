@@ -11,7 +11,7 @@ const App = () => {
   const [account, setAccount] = useState("");
   const [loading, setLoading] = useState(true);
   const [ethtagram, setEthtagram] = useState(null);
-  // const [images,setImages] = useState([])
+  const [images,setImages] = useState([])
   const [text, setText] = useState("");
   const [bufferImage, setBufferImage] = useState(null);
 
@@ -30,6 +30,8 @@ const App = () => {
     const web3 = window.web3;
     const account = await web3.eth.getAccounts();
     setAccount(account[0]);
+
+
     const networkId = await web3.eth.net.getId();
     const networkData = Ethtagram.networks[networkId];
     if (networkData) {
@@ -37,40 +39,53 @@ const App = () => {
         Ethtagram.abi,
         networkData.address
       );
+      const imageCount = await ethtagram.methods.imageCount().call()
+
+      for(let i =1;i<imageCount;i++){
+        const image = await ethtagram.methods.images(i).call();
+        console.log(image);
+      }
       setEthtagram(ethtagram);
+
       setLoading(false);
     } else {
       alert("contract not deployed");
     }
   };
-  
+  let test;
   const captureFile = (event) => {
     event.preventDefault()
     const file = event.target.files[0];
     const reader = new window.FileReader();
     reader.readAsArrayBuffer(file);
-    console.log('captureFile function');
-
-let test ;
+ 
     reader.onloadend = async () => {
       
       test = await Buffer(reader.result);
       // console.log(test);
       setBufferImage(test)
-      console.log('onloaded function');
+    
     };
   };
+
   const [urlArr, setUrlArr] = useState([]);
   const uploadImage = async (description) => {
     console.log(bufferImage);
  
+    setLoading(true);
     const created = await client.add(bufferImage)
     console.log(created);
     const url = `https://ipfs.infura.io/ipfs/${created.path}`;
     setUrlArr(prev => [...prev, url]);  
+
+    ethtagram.methods.uploadImage(created.path,description).send({from:account}).on("transactionHash",result =>{
+      console.log(result);
+    })
+  
+    setLoading(false)
   };
   
-  console.log(urlArr);
+
   useEffect(() => {
     loadWeb3();
     loadBlockchain();
@@ -107,7 +122,7 @@ let test ;
             </div>
           </form>
           {urlArr.map((url,index) => (
-            <img key={index} src={url} alt='image' width={100} height={100} />
+            <img key={index} src={url} alt='image' width={400} height={400} />
           ))}
         </>
       )}
