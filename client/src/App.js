@@ -97,6 +97,11 @@ const App = () => {
       });
   };
 
+  const copyToClipboard = (text) =>{
+    navigator.clipboard.writeText(text);
+    alert('copied to clipboard')
+  }
+
   useEffect(() => {
     loadWeb3();
     loadBlockchain();
@@ -108,7 +113,7 @@ const App = () => {
         <p>loading..</p>
       ) : (
         <>
-          <Navbar account={account} />
+          <Navbar account={account} copyToClipboard={copyToClipboard} />
           <form
             onSubmit={(e) => {
               e.preventDefault();
