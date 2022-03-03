@@ -3,15 +3,15 @@ import "./App.css";
 import Web3 from "web3";
 // import Jdenticon from "react-jdenticon";
 import Ethtagram from "./abis/Instagram.json";
-import {create} from 'ipfs-http-client'
+import { create } from "ipfs-http-client";
 
-const client = create('https://ipfs.infura.io:5001/api/v0');
+const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const App = () => {
   const [account, setAccount] = useState("");
   const [loading, setLoading] = useState(true);
   const [ethtagram, setEthtagram] = useState(null);
-  const [images,setImages] = useState([])
+  const [images, setImages] = useState([]);
   const [text, setText] = useState("");
   const [bufferImage, setBufferImage] = useState(null);
 
@@ -31,23 +31,22 @@ const App = () => {
     const account = await web3.eth.getAccounts();
     setAccount(account[0]);
 
-
     const networkId = await web3.eth.net.getId();
     const networkData = Ethtagram.networks[networkId];
     if (networkData) {
       const ethtagram = new web3.eth.Contract(
         Ethtagram.abi,
         networkData.address
-        );
-        setEthtagram(ethtagram);
+      );
+      setEthtagram(ethtagram);
 
-      const imageCount = await ethtagram.methods.imageCount().call()
+      const imageCount = await ethtagram.methods.imageCount().call();
 
-      for(let i =1;i<imageCount;i++){
+      for (let i = 1; i < imageCount; i++) {
         const image = await ethtagram.methods.images(i).call();
-        setImages(prev => [...prev,image])
+        setImages((prev) => [...prev, image]);
       }
-      
+
       setLoading(false);
     } else {
       alert("contract not deployed");
@@ -55,37 +54,47 @@ const App = () => {
   };
   let test;
   const captureFile = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const file = event.target.files[0];
     const reader = new window.FileReader();
     reader.readAsArrayBuffer(file);
- 
+
     reader.onloadend = async () => {
-      
       test = await Buffer(reader.result);
       // console.log(test);
-      setBufferImage(test)
-    
+      setBufferImage(test);
     };
   };
 
   const [urlArr, setUrlArr] = useState([]);
   const uploadImage = async (description) => {
     console.log(bufferImage);
- 
+
     setLoading(true);
-    const created = await client.add(bufferImage)
+    const created = await client.add(bufferImage);
     console.log(created);
     const url = `https://ipfs.infura.io/ipfs/${created.path}`;
-    setUrlArr(prev => [...prev, url]);  
+    setUrlArr((prev) => [...prev, url]);
 
-    ethtagram.methods.uploadImage(created.path,description).send({from:account}).on("transactionHash",result =>{
-      setLoading(false)
-      console.log(result);
-    })
-  
+    ethtagram.methods
+      .uploadImage(created.path, description)
+      .send({ from: account })
+      .on("transactionHash", (result) => {
+        setLoading(false);
+        console.log(result);
+      });
   };
-  
+
+  const tipAmountOwner = (id, amount) => {
+    setLoading(true);
+    ethtagram.methods
+      .tipImageOwner(id)
+      .send({ from: account, value: amount })
+      .on("transactionHash", (result) => {
+        setLoading(false);
+        console.log(result);
+      });
+  };
 
   useEffect(() => {
     loadWeb3();
@@ -122,13 +131,34 @@ const App = () => {
               <button>Upload</button>
             </div>
           </form>
-          {images.length >0 && images.map((img,index) => (
-            <div key={index} >
-            <img  src={`https://ipfs.infura.io/ipfs/${img.hash}`} alt={img.description} width={400} height={400} />
-            {img.hash}
-            </div>
-            
-          ))}
+          {images.length > 0 &&
+            images.map((img, index) => (
+              <div key={index}>
+                <img
+                  src={`https://ipfs.infura.io/ipfs/${img.hash}`}
+                  alt={img.description}
+                  width={400}
+                  height={400}
+                />
+                <small className="float-left mt-1 text-muted">
+                  TIPS:{" "}
+                  {window.web3.utils.fromWei(
+                    img.tipAmount.toString(),
+                    "Ether"
+                  )}{" "}
+                  ETH
+                </small>
+                <button
+                  onClick={() => {
+                    let tipAmount = window.web3.utils.toWei("0.1", "Ether");
+                    console.log(img.id, tipAmount);
+                    tipAmountOwner(img.id, tipAmount);
+                  }}
+                >
+                  amount
+                </button>
+              </div>
+            ))}
         </>
       )}
     </div>
