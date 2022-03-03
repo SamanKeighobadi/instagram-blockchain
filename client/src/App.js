@@ -4,6 +4,7 @@ import Web3 from "web3";
 // import Jdenticon from "react-jdenticon";
 import Ethtagram from "./abis/Instagram.json";
 import { create } from "ipfs-http-client";
+import Navbar from "./components/common/Navbar";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -107,8 +108,7 @@ const App = () => {
         <p>loading..</p>
       ) : (
         <>
-          <p>{account ? account : "0x0"}</p>
-          <h1>Hello instagram !</h1>
+          <Navbar account={account} />
           <form
             onSubmit={(e) => {
               e.preventDefault();
