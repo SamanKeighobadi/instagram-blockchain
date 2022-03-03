@@ -6,6 +6,7 @@ import { create } from "ipfs-http-client";
 import Navbar from "./components/common/Navbar";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import Posts from "./components/Posts/Posts";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -156,34 +157,7 @@ const App = () => {
               <button>Upload</button>
             </div>
           </form>
-          {images.length > 0 &&
-            images.map((img, index) => (
-              <div key={index}>
-                <img
-                  src={`https://ipfs.infura.io/ipfs/${img.hash}`}
-                  alt={img.description}
-                  width={400}
-                  height={400}
-                />
-                <small className="float-left mt-1 text-muted">
-                  TIPS:{" "}
-                  {window.web3.utils.fromWei(
-                    img.tipAmount.toString(),
-                    "Ether"
-                  )}{" "}
-                  ETH
-                </small>
-                <button
-                  onClick={() => {
-                    let tipAmount = window.web3.utils.toWei("0.1", "Ether");
-                    console.log(img.id, tipAmount);
-                    tipAmountOwner(img.id, tipAmount);
-                  }}
-                >
-                  amount
-                </button>
-              </div>
-            ))}
+          <Posts images={images} tipAmountOwner={tipAmountOwner} />
         </>
       )}
     </div>
