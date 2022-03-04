@@ -7,6 +7,7 @@ import Navbar from "./components/common/Navbar";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Posts from "./components/Posts/Posts";
+import UploadPost from "./components/common/UploadPost";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -135,28 +136,7 @@ const App = () => {
       ) : (
         <>
           <Navbar account={account} copyToClipboard={copyToClipboard} />
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              uploadImage(text);
-            }}
-          >
-            <input
-              type={"file"}
-              accept={".jpg ,.jpeg,.png,.bmp,.gif"}
-              onChange={captureFile}
-              required
-            />
-            <div>
-              <input
-                type={"text"}
-                placeholder="image description..."
-                onChange={(e) => setText(e.target.value)}
-                required
-              />
-              <button>Upload</button>
-            </div>
-          </form>
+          <UploadPost uploadImage={uploadImage} captureFile={captureFile} />
           <Posts images={images} tipAmountOwner={tipAmountOwner} />
         </>
       )}
