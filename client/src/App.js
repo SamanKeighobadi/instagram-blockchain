@@ -4,8 +4,8 @@ import Web3 from "web3";
 import Ethtagram from "./abis/Instagram.json";
 import { create } from "ipfs-http-client";
 import Navbar from "./components/common/Navbar";
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import Posts from "./components/Posts/Posts";
 import UploadPost from "./components/common/UploadPost";
 
@@ -87,12 +87,12 @@ const App = () => {
         setLoading(false);
         console.log(result);
         Alert.fire({
-          icon:"success",
-          title:"Image Uploaded !",
-          showConfirmButton:false,
-          timer:3000,
+          icon: "success",
+          title: "Image Uploaded !",
+          showConfirmButton: false,
+          timer: 3000,
         });
-        setTimeout(() => window.location.reload() ,3000)
+        setTimeout(() => window.location.reload(), 3000);
       });
   };
 
@@ -105,22 +105,22 @@ const App = () => {
         setLoading(false);
         console.log(result);
         Alert.fire({
-          icon:"success",
-          title:"Tip Amount successfull !",
-          showConfirmButton:false,
-          timer:3000,
+          icon: "success",
+          title: "Tip Amount successfull !",
+          showConfirmButton: false,
+          timer: 3000,
         });
-        setTimeout(() => window.location.reload() ,3000)
+        setTimeout(() => window.location.reload(), 3000);
       });
   };
 
-  const copyToClipboard = (text) =>{
+  const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     Alert.fire({
-      icon:'success',
-      title:"Copied to clipboard!"
-    })
-  }
+      icon: "success",
+      title: "Copied to clipboard!",
+    });
+  };
 
   useEffect(() => {
     loadWeb3();
@@ -134,10 +134,10 @@ const App = () => {
       ) : (
         <>
           <Navbar account={account} copyToClipboard={copyToClipboard} />
-         <div className="flex items-center flex-col space-y-10">
-         <UploadPost uploadImage={uploadImage} captureFile={captureFile} />
-          <Posts images={images} tipAmountOwner={tipAmountOwner} />
-         </div>
+          <div className="flex items-center flex-col space-y-10">
+            <UploadPost uploadImage={uploadImage} captureFile={captureFile} />
+            <Posts images={images} tipAmountOwner={tipAmountOwner} />
+          </div>
         </>
       )}
     </div>

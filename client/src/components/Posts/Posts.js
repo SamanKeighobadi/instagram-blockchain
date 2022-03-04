@@ -4,7 +4,7 @@ import Post from "./Post";
 
 const Posts = ({ images, tipAmountOwner }) => {
   return (
-    <div>
+    <div className="">
       <Post posts={images} tipAmountPost={tipAmountOwner} />
     </div>
   );
