@@ -16,7 +16,6 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [ethtagram, setEthtagram] = useState(null);
   const [images, setImages] = useState([]);
-  const [text, setText] = useState("");
   const [bufferImage, setBufferImage] = useState(null);
 
   const Alert = withReactContent(Swal);
@@ -67,7 +66,6 @@ const App = () => {
 
     reader.onloadend = async () => {
       test = await Buffer(reader.result);
-      // console.log(test);
       setBufferImage(test);
     };
   };
@@ -136,8 +134,10 @@ const App = () => {
       ) : (
         <>
           <Navbar account={account} copyToClipboard={copyToClipboard} />
-          <UploadPost uploadImage={uploadImage} captureFile={captureFile} />
+         <div className="flex items-center flex-col space-y-10">
+         <UploadPost uploadImage={uploadImage} captureFile={captureFile} />
           <Posts images={images} tipAmountOwner={tipAmountOwner} />
+         </div>
         </>
       )}
     </div>
