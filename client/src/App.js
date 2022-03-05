@@ -130,7 +130,9 @@ const App = () => {
   return (
     <div>
       {loading ? (
-        <p>loading..</p>
+        <div className="text-center flex justify-center items-center h-screen">
+        <p className="text-slate-500 text-2xl font-bold  italic">Loading...</p>
+        </div>
       ) : (
         <>
           <Navbar account={account} copyToClipboard={copyToClipboard} />
