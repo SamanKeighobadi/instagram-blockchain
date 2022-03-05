@@ -49,7 +49,10 @@ const App = () => {
 
       for (let i = 1; i < imageCount; i++) {
         const image = await ethtagram.methods.images(i).call();
-        setImages((prev) => [...prev, image]);
+        console.log("imags",image);
+        if (image.hash !== "") {
+          setImages((prev) => [...prev, image]);
+        }
       }
 
       setLoading(false);
@@ -96,6 +99,23 @@ const App = () => {
       });
   };
 
+  const removePost = (id) => {
+    setLoading(true);
+    ethtagram.methods
+      .removeImage(id)
+      .send({ from: account })
+      .once("receipt", (receipt) => {
+        setLoading(false);
+        Alert.fire({
+          icon: "success",
+          title: "Image successfully deleted !",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+        setTimeout(() => window.location.reload(), 3000);
+      });
+  };
+
   const tipAmountOwner = (id, amount) => {
     setLoading(true);
     ethtagram.methods
@@ -131,14 +151,20 @@ const App = () => {
     <div>
       {loading ? (
         <div className="text-center flex justify-center items-center h-screen">
-        <p className="text-slate-500 text-2xl font-bold  italic">Loading...</p>
+          <p className="text-slate-500 text-2xl font-bold  italic">
+            Loading...
+          </p>
         </div>
       ) : (
         <>
           <Navbar account={account} copyToClipboard={copyToClipboard} />
           <div className="flex items-center flex-col space-y-10">
             <UploadPost uploadImage={uploadImage} captureFile={captureFile} />
-            <Posts images={images} tipAmountOwner={tipAmountOwner} />
+            <Posts
+              images={images}
+              tipAmountOwner={tipAmountOwner}
+              removeImage={removePost}
+            />
           </div>
         </>
       )}

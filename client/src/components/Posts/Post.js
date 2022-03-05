@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import Jdenticon from "react-jdenticon";
 
-const Post = ({ posts, tipAmountPost }) => {
-  console.log(posts);
+const Post = ({ posts, tipAmountPost,deletePost }) => {
+  // console.log(posts);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xl:grid-cols-3  gap-6">
       {posts.length > 0 &&
@@ -41,6 +41,10 @@ const Post = ({ posts, tipAmountPost }) => {
                 tipAmount
               </button>
             </div>
+            <button onClick={() => deletePost(img.id)}>
+              delete
+            </button>
+
            </div>
           </div>
         ))}

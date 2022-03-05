@@ -29,6 +29,14 @@ contract Instagram {
     address payable author
   );
 
+  event RevmoveImage(
+    uint id,
+    string hash,
+    string description,
+    uint tipAmount,
+    address  author
+  );
+
   constructor() public {
     name = "Ethtagram";
   }
@@ -48,6 +56,12 @@ contract Instagram {
     images[imageCount] = Image(imageCount, _imgHash, _description, 0, msg.sender);
     // Trigger an event
     emit ImageCreated(imageCount, _imgHash, _description, 0, msg.sender);
+  }
+
+  function removeImage(uint _id) public {
+    delete images[_id];
+  Image memory _image = images[_id];
+    emit RevmoveImage(_id, _image.hash, _image.description, _image.tipAmount, _image.author);
   }
 
   function tipImageOwner(uint _id) public payable {

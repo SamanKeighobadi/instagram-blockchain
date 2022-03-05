@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import Post from "./Post";
 
-const Posts = ({ images, tipAmountOwner }) => {
+const Posts = ({ images, tipAmountOwner,removeImage }) => {
   return (
     <div className="">
-      <Post posts={images} tipAmountPost={tipAmountOwner} />
+      <Post posts={images} tipAmountPost={tipAmountOwner} deletePost={removeImage} />
     </div>
   );
 };
