@@ -49,7 +49,7 @@ const App = () => {
 
       for (let i = 1; i < imageCount; i++) {
         const image = await ethtagram.methods.images(i).call();
-        console.log("imags",image);
+        console.log("imags", image);
         if (image.hash !== "") {
           setImages((prev) => [...prev, image]);
         }
@@ -75,65 +75,67 @@ const App = () => {
 
   const [urlArr, setUrlArr] = useState([]);
   const uploadImage = async (description) => {
-    console.log(bufferImage);
+    try {
+      console.log(bufferImage);
 
-    setLoading(true);
-    const created = await client.add(bufferImage);
+      setLoading(true);
+      const created = await client.add(bufferImage);
 
-    const url = `https://ipfs.infura.io/ipfs/${created.path}`;
-    setUrlArr((prev) => [...prev, url]);
+      const url = `https://ipfs.infura.io/ipfs/${created.path}`;
+      setUrlArr((prev) => [...prev, url]);
 
-    ethtagram.methods
-      .uploadImage(created.path, description)
-      .send({ from: account })
-      .on("transactionHash", (result) => {
-        setLoading(false);
-        
-        Alert.fire({
-          icon: "success",
-          title: "Image Uploaded !",
-          showConfirmButton: false,
-          timer: 3000,
-        });
-        setTimeout(() => window.location.reload(), 3000);
+      await ethtagram.methods.uploadImage(created.path,description).send({from:account});
+      setLoading(false);
+      Alert.fire({
+        icon: "success",
+        title: "Image Uploaded !",
+        showConfirmButton: false,
+        timer: 3000,
       });
+      setTimeout(() => window.location.reload(), 3000);
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
-  const removePost = (id) => {
-    setLoading(true);
-    // ethtagram.methods
-    //   .removeImage(id)
-    //   .send({ from: account })
-    //   .once("receipt", (receipt) => {
-    //     setLoading(false);
-    //     Alert.fire({
-    //       icon: "success",
-    //       title: "Image successfully deleted !",
-    //       showConfirmButton: false,
-    //       timer: 3000,
-    //     });
-    //     setTimeout(() => window.location.reload(), 3000);
-    //   });
-    console.log('post deleted');
-    setLoading(false)
+  const removePost = async (id) => {
+    try {
+      setLoading(true);
+      await ethtagram.methods.removeImage(id).send({ from: account });
+
+      Alert.fire({
+        icon: "success",
+        title: "Image successfully deleted !",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      setTimeout(() => window.location.reload(), 3000);
+
+      console.log("post deleted");
+      setLoading(false);
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
-  const tipAmountOwner = (id, amount) => {
-    setLoading(true);
-    ethtagram.methods
-      .tipImageOwner(id)
-      .send({ from: account, value: amount })
-      .on("transactionHash", (result) => {
-        setLoading(false);
-        console.log(result);
-        Alert.fire({
-          icon: "success",
-          title: "Tip Amount successfull !",
-          showConfirmButton: false,
-          timer: 3000,
-        });
-        setTimeout(() => window.location.reload(), 3000);
+  const tipAmountOwner = async (id, amount) => {
+    try {
+      setLoading(true);
+      await ethtagram.methods
+        .tipImageOwner(id)
+        .send({ from: account, value: amount });
+      setLoading(false);
+      Alert.fire({
+        icon: "success",
+        title: "Tip Amount successfull !",
+        showConfirmButton: false,
+        timer: 3000,
       });
+      console.log("tip amount async ");
+      setTimeout(() => window.location.reload(), 3000);
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
   const copyToClipboard = (text) => {
