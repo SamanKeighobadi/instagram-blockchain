@@ -59,9 +59,9 @@ contract Instagram {
   }
 
   function removeImage(uint _id) public {
-    delete images[_id];
-  Image memory _image = images[_id];
-    emit RevmoveImage(_id, _image.hash, _image.description, _image.tipAmount, _image.author);
+  //   delete images[_id];
+  // Image memory _image = images[_id];
+  //   emit RevmoveImage(_id, _image.hash, _image.description, _image.tipAmount, _image.author);
   }
 
   function tipImageOwner(uint _id) public payable {

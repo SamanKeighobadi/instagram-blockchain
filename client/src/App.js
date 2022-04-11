@@ -79,7 +79,7 @@ const App = () => {
 
     setLoading(true);
     const created = await client.add(bufferImage);
-    console.log(created);
+
     const url = `https://ipfs.infura.io/ipfs/${created.path}`;
     setUrlArr((prev) => [...prev, url]);
 
@@ -88,7 +88,7 @@ const App = () => {
       .send({ from: account })
       .on("transactionHash", (result) => {
         setLoading(false);
-        console.log(result);
+        
         Alert.fire({
           icon: "success",
           title: "Image Uploaded !",
@@ -101,19 +101,21 @@ const App = () => {
 
   const removePost = (id) => {
     setLoading(true);
-    ethtagram.methods
-      .removeImage(id)
-      .send({ from: account })
-      .once("receipt", (receipt) => {
-        setLoading(false);
-        Alert.fire({
-          icon: "success",
-          title: "Image successfully deleted !",
-          showConfirmButton: false,
-          timer: 3000,
-        });
-        setTimeout(() => window.location.reload(), 3000);
-      });
+    // ethtagram.methods
+    //   .removeImage(id)
+    //   .send({ from: account })
+    //   .once("receipt", (receipt) => {
+    //     setLoading(false);
+    //     Alert.fire({
+    //       icon: "success",
+    //       title: "Image successfully deleted !",
+    //       showConfirmButton: false,
+    //       timer: 3000,
+    //     });
+    //     setTimeout(() => window.location.reload(), 3000);
+    //   });
+    console.log('post deleted');
+    setLoading(false)
   };
 
   const tipAmountOwner = (id, amount) => {
