@@ -11,7 +11,7 @@ const Posts = ({ images, tipAmountOwner,removeImage }) => {
 };
 
 Posts.propTypes = {
-  images: PropTypes.array,
+  images: PropTypes.arrayOf(PropTypes.object),
   tipAmountOwner: PropTypes.func,
 };
 

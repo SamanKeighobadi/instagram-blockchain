@@ -1,7 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
+// icons and avatar packages
 import { CameraIcon, ClipboardCopyIcon } from "@heroicons/react/outline";
 import Jdenticon from "react-jdenticon";
+// Prop types
+import PropTypes from "prop-types";
 
 const Navbar = ({ account, copyToClipboard }) => {
   return (

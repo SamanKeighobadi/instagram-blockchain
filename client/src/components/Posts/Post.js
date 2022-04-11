@@ -53,7 +53,7 @@ const Post = ({ posts, tipAmountPost,deletePost }) => {
 };
 
 Post.propTypes = {
-  posts: PropTypes.array,
+  posts: PropTypes.arrayOf(PropTypes.object),
   tipAmountPost: PropTypes.func,
 };
 

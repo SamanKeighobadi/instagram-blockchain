@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
+// blockchain tools
 import Web3 from "web3";
 import Ethtagram from "./abis/Instagram.json";
 import { create } from "ipfs-http-client";
-import Navbar from "./components/common/Navbar";
+// sweet alert 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+// custom components
+import Navbar from "./components/common/Navbar";
 import Posts from "./components/Posts/Posts";
 import UploadPost from "./components/common/UploadPost";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const App = () => {
+
+  // init states
   const [account, setAccount] = useState("");
   const [loading, setLoading] = useState(true);
   const [ethtagram, setEthtagram] = useState(null);
@@ -20,6 +24,7 @@ const App = () => {
 
   const Alert = withReactContent(Swal);
 
+  // Initialization web3 and blockchain data
   const loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -30,7 +35,7 @@ const App = () => {
       window.alert("Please install metamask");
     }
   };
-
+  
   const loadBlockchain = async () => {
     const web3 = window.web3;
     const account = await web3.eth.getAccounts();
@@ -60,7 +65,11 @@ const App = () => {
       alert("contract not deployed");
     }
   };
-  let test;
+
+  /**
+   * @param {Object} event object of upload filed
+   */
+  let bufferedImage;
   const captureFile = (event) => {
     event.preventDefault();
     const file = event.target.files[0];
@@ -68,12 +77,16 @@ const App = () => {
     reader.readAsArrayBuffer(file);
 
     reader.onloadend = async () => {
-      test = await Buffer(reader.result);
-      setBufferImage(test);
+      bufferedImage = await Buffer(reader.result);
+      setBufferImage(bufferedImage);
     };
   };
 
   const [urlArr, setUrlArr] = useState([]);
+  /**
+   * 
+   * @param {String} description description of image which want to upload
+   */
   const uploadImage = async (description) => {
     try {
       console.log(bufferImage);
@@ -98,6 +111,10 @@ const App = () => {
     }
   };
 
+  /**
+   * 
+   * @param {string} id id of image which we want to delete it
+   */
   const removePost = async (id) => {
     try {
       setLoading(true);
@@ -118,6 +135,11 @@ const App = () => {
     }
   };
 
+  /**
+   * 
+   * @param {string} id id of post which we want to reward
+   * @param {number} amount amount of tip ==> 0.1ETH
+   */
   const tipAmountOwner = async (id, amount) => {
     try {
       setLoading(true);
@@ -138,6 +160,10 @@ const App = () => {
     }
   };
 
+  /**
+   * 
+   * @param {string} text content we want to copy 
+   */
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     Alert.fire({
