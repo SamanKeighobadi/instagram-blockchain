@@ -1,6 +1,12 @@
 # Ethtagram - Ethereum Blockchain , React.js + TailwindCSS + Truffle
 ## A photo sharing app on blockchain platform whit the ability rate posts 
 
+## What did i learn in this project ?
+  <ul>
+  <li> How to user IPFS  </li>
+  <li> How to upload file on IPFS with ipfs-http-client package </li>
+ 
+  </ul>
 
 ## Whai packges used: 
 <ul>
