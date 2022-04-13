@@ -5,7 +5,7 @@
   <ul>
   <li> How to user IPFS  </li>
   <li> How to upload file on IPFS with ipfs-http-client package </li>
- 
+  <li> What is FileReader and how it s work </li>
   </ul>
 
 ## Whai packges used: 
