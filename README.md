@@ -1,5 +1,5 @@
 # Ethtagram - Ethereum Blockchain , React.js + TailwindCSS + Truffle
-## A photo sharing app on blockchain platform whit the ability rate posts 
+### A photo sharing app on blockchain platform whit the ability rate posts 
 
 ## What did i learn in this project ?
   <ul>
